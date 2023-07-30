@@ -29,6 +29,16 @@ docker-compose -f docker-compose.tests.yaml up -d
 
 ## Running locally
 
+### Make .env file with database settings data in project root directory
+
+```
+DB_NAME=postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+DB_HOST=localhost
+DB_PORT=5432
+```
+
 
 ### Setup and activate venv
 
