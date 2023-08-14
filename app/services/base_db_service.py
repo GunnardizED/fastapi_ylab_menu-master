@@ -11,9 +11,9 @@ from sqlmodel import select
 
 from app.db.models import DefaultBase, DefaultCreateBase, DefaultUpdateBase
 
-ModelType = TypeVar('ModelType', bound=DefaultBase)
-CreateSchemaType = TypeVar('CreateSchemaType', bound=DefaultCreateBase)
-UpdateSchemaType = TypeVar('UpdateSchemaType', bound=DefaultUpdateBase)
+ModelType = TypeVar("ModelType", bound=DefaultBase)
+CreateSchemaType = TypeVar("CreateSchemaType", bound=DefaultCreateBase)
+UpdateSchemaType = TypeVar("UpdateSchemaType", bound=DefaultUpdateBase)
 
 
 @dataclass
@@ -39,7 +39,7 @@ class BaseDbService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         objs: list[ModelType] = result.scalars().all()
         return objs
 
-    async def get(self, id_: UUID4) -> ModelType | None:
+    async def get(self, id_: UUID4) -> ModelType:
         """
         The get function is used to retrieve a single object from the database.
         It takes an id and returns the corresponding object, or raises an
@@ -55,19 +55,19 @@ class BaseDbService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         statement = select(self.model).where(self.model.id == id_)
         result = await self.db_session.execute(statement)
         try:
-            obj: ModelType | None = result.scalar_one()
+            obj: ModelType = result.scalar_one()
             return obj
         except NoResultFound:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail=f'{self.model.__name__.lower()} not found',
+                detail=f"{self.model.__name__.lower()} not found",
             )
 
     async def create(
         self,
         obj: CreateSchemaType,
         **kwargs,
-    ) -> ModelType | None:
+    ) -> ModelType:
         """
         The create function makes a new object of the type specified in the
         CreateSchemaType parameter. It takes an argument of obj which is an
@@ -89,7 +89,7 @@ class BaseDbService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         self,
         id_: UUID4,
         obj: UpdateSchemaType,
-    ) -> ModelType | None:
+    ) -> ModelType:
         """
         The update function updates an existing object in the database.
         It takes two arguments, id_ and obj. The id_ argument is the unique
@@ -128,7 +128,7 @@ class BaseDbService(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         await self.db_session.delete(db_obj)
         await self.db_session.commit()
         item_data = {
-            'status': True,
-            'message': f'The {self.model.__name__.lower()} has been deleted',
+            "status": True,
+            "message": f"The {self.model.__name__.lower()} has been deleted",
         }
         return JSONResponse(content=item_data)

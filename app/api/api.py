@@ -14,3 +14,9 @@ router.include_router(
     prefix="/menus/{menu_id}/submenus/{submenu_id}/dishes",
     tags=["Dishes"],
 )
+router.include_router(
+    load_data.router,
+    prefix="/load_data",
+    tags=["Load Data"],
+)
+router.include_router(reports.router, prefix="/reports", tags=["Reports"])

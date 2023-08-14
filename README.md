@@ -15,6 +15,9 @@ Based on:
 - PostgreSQL 15.1
 - Docker 20.10.22
 - Redis 7.0.1
+- Celery 5.2.7
+- RabbitMQ 3.11.8
+
 
 ## Setup Guide
 
@@ -25,11 +28,15 @@ SERVER_NAME=localhost
 DB_NAME=postgres
 POSTGRES_USER=postgres
 POSTGRES_PASSWORD=postgres
-DB_HOST=localhost
+DB_HOST=db
 DB_PORT=5432
-REDIS_HOST=localhost
-REDIS_PORT=9000
+REDIS_HOST=redis
+REDIS_PORT=6379
 REDIS_CACHE_TIME=3600
+RABBITMQ_HOST=rabbitmq
+RABBITMQ_PORT=5672
+RABBITMQ_DEFAULT_USER=rabbit
+RABBITMQ_DEFAULT_PASS=rabbit
 ```
 
 ## Running Docker container
